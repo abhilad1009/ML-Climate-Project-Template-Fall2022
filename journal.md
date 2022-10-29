@@ -11,3 +11,17 @@
 * https://deepstruct.github.io/ICML17/1stDeepStructWS_paper_2.pdf
 ## Implementation Resource
 * https://monai.io/
+
+# 2 September - 30 October
+## Base Code Review
+* Completed review of starter code
+* Identified implemetation changes
+* To Do: Customize Deep Learning Model
+## Data Collection (Bulk of time spent here)
+* Downloaded training and validation dataset (>300 GB)
+* Setup storage with Google cloud subscription
+* Setup coding environment with Colab subscription
+## Data Analysis
+* Priliminary analysis of data from notebooks in starter code
+* To Do: Perform data augmentation based on domain knowlede
+* To Do: Convert data augmentation techniques to be compatible with the training code
