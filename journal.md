@@ -25,3 +25,13 @@
 * Priliminary analysis of data from notebooks in starter code
 * To Do: Perform data augmentation based on domain knowlede
 * To Do: Convert data augmentation techniques to be compatible with the training code
+
+# 1 November - 10 November
+## Dataset usage
+* Complete stage 2 dataset size is a limiting factor
+* Due to computing resource limitations, we will restrict our model development to stage 1 which includes a subset of the complete dataset.
+
+## Environment setup
+* Baseline model creation is complete
+* To Do: Resolve depedancy issues
+* To Do: Train baseline model on stage 1 data
