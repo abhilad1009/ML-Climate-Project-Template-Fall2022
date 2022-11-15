@@ -35,3 +35,8 @@
 * Baseline model creation is complete
 * To Do: Resolve depedancy issues
 * To Do: Train baseline model on stage 1 data
+
+# 15 November - 20 November
+## Model training
+* Generate prediction from trained baseline model
+* Add custom deep learning model based on state-of-the-art approaches
