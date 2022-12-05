@@ -40,3 +40,12 @@
 ## Model training
 * Generate prediction from trained baseline model
 * Add custom deep learning model based on state-of-the-art approaches
+
+# 21 November - 1 December
+## GCP instance allocation issue
+* Model training running late due to GCP resource issues
+* Data transfer issue to to AWS access block
+
+# 1 December - 10 December
+* Custom model training and prediction
+* Paper draft and final changes
