@@ -1,3 +1,11 @@
-***Currently copied the supplied abstract from NeruIPS competition***
-
-The Weather4cast NeurIPS Competition has high practical impact for society: Unusual weather is increasing all over the world, reflecting ongoing climate change, and affecting communities in agriculture, transport, public health and safety, etc.Can you predict future rain patterns with modern machine learning algorithms? Apply spatio-temporal modelling to complex dynamic systems. Get access to unique large-scale data and demonstrate temporal and spatial transfer learning under strong distributional shifts.We provide a super-resolution challenge of high relevance to local events: Predict future weather as measured by ground-based hi-res rain radar weather stations.In addition to movies comprising rain radar maps you get large-scale multi-band satellite sensor images for exploiting data fusion.Winning models will advance key areas of methods research in machine learning, of relevance beyond the application domain.
+With the latest remote sensing technologies and abundance of data, modern machine
+learning-based methods have made it possible to accurately predict weather events which
+is crucial in today’s scenario of climate change. The Weather4cast NeurIPS Competition
+ventures to predict future rainfall patterns with modern machine learning algorithms. Using
+large-scale satellite radiance measurements over a large area, the goal is to predict highresolution
+local rainfall events up to 8 hours into the future as measured by ground-radar
+weather stations. We explore the domain knowledge to identify areas of concern from a
+machine-learning perspective. Instead of proposing new model architecture, we exploit
+domain knowledge to tweak the existing 3D UNet model architecture with relevant layers
+which are better suited for the proposed task. We hope to provide a brief glimpse into how
+domain-specific approaches can be helpful for resource-constrained environments.
