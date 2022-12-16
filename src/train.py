@@ -47,18 +47,26 @@ class DataModule(pl.LightningDataModule):
         self.params = params     
         self.training_params = training_params
         if mode in ['train']:
+            print("Loading TRAINING/VALIDATION dataset -- as test")
             self.train_ds = RainData('training', **self.params)
             self.val_ds = RainData('validation', **self.params)
+            print(f"Training dataset size: {len(self.train_ds)}")
         if mode in ['val']:
-            self.val_ds = RainData('validation', **self.params)    
+            print("Loading VALIDATION dataset -- as test")
+            self.val_ds = RainData('validation', **self.params)  
         if mode in ['predict']:    
+            print("Loading PREDICTION/TEST dataset -- as test")
             self.test_ds = RainData('test', **self.params)
+        if mode in ['heldout']:    
+            print("Loading HELD-OUT dataset -- as test")
+            self.test_ds = RainData('heldout', **self.params)   
 
     def __load_dataloader(self, dataset, shuffle=True, pin=True):
         dl = DataLoader(dataset, 
                         batch_size=self.training_params['batch_size'],
                         num_workers=self.training_params['n_workers'],
-                        shuffle=shuffle, pin_memory=pin, prefetch_factor=2,
+                        shuffle=shuffle, 
+                        pin_memory=pin, prefetch_factor=2,
                         persistent_workers=False)
         return dl
     
@@ -111,7 +119,7 @@ def get_trainer(gpus,params):
         tb_logger = False
 
     if params['train']['early_stopping']: 
-        early_stop_callback = EarlyStopping(monitor="val_loss",
+        early_stop_callback = EarlyStopping(monitor="val_loss_epoch",
                                             patience=params['train']['patience'],
                                             mode="min")
         callback_funcs = [checkpoint_callback, early_stop_callback]
@@ -175,14 +183,15 @@ def train(params, gpus, mode, checkpoint_path, model=UNetModel):
         do_test(trainer, model, data.val_dataloader()) 
 
 
-    if mode == 'predict':
+    if mode == 'predict' or mode == 'heldout':
     # ------------
     # PREDICT
     # ------------
         print("--------------------")
         print("--- PREDICT MODE ---")
         print("--------------------")
-        if len(params["dataset"]["regions"]) > 1 or params["predict"]["region_to_predict"] != str(params["dataset"]["regions"][0]):
+        print("REGIONS!:: ", params["dataset"]["regions"], params["predict"]["region_to_predict"])
+        if params["predict"]["region_to_predict"] not in params["dataset"]["regions"]:
             print("EXITING... \"regions\" and \"regions to predict\" must indicate the same region name in your config file.")
         else:
             do_predict(trainer, model, params["predict"], data.test_dataloader())
@@ -240,5 +249,8 @@ if __name__ == "__main__":
 
     5) generate predictions (plese note that this mode works only for one GPU)
     python train.py --gpus 1 --mode predict  --config_path config_baseline.yaml  --checkpoint "lightning_logs/PATH-TO-YOUR-MODEL-LOGS/checkpoints/YOUR-CHECKPOINT-FILENAME.ckpt"
+
+    6) generate predictions for the held-out dataset (plese note that this mode works only for one GPU)
+    python train.py --gpus 1 --mode heldout  --config_path config_baseline.yaml  --checkpoint "lightning_logs/PATH-TO-YOUR-MODEL-LOGS/checkpoints/YOUR-CHECKPOINT-FILENAME.ckpt"
 
     """

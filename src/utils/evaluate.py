@@ -62,7 +62,7 @@ def recall_precision_f1_acc(y, y_hat):
     cm = get_confusion_matrix(y.ravel(), y_hat.ravel())
     if len(cm)==4:
         tn, fp, fn, tp = cm
-        recall, precision, F1 = 0, 0, 0
+        recall, precision, F1, acc, csi = 0, 0, 0, 0, 0
 
         if (tp + fn) > 0:
             recall = tp / (tp + fn)
@@ -76,7 +76,8 @@ def recall_precision_f1_acc(y, y_hat):
         if (tp + fn + fp) > 0: 
             csi = tp / (tp + fn + fp)
 
-        acc = (tn + tp) / (tn+fp+fn+tp)
+        if (tn+fp+fn+tp) > 0:
+            acc = (tn + tp) / (tn+fp+fn+tp)
     else:
         print("FATAL ERROR: cannot create confusion matrix")
         print("EXITING....")
@@ -85,20 +86,20 @@ def recall_precision_f1_acc(y, y_hat):
     return recall, precision, F1, acc, csi
 
 
-SMOOTH = 1e-6
 def iou_class(y_pred: t.Tensor, y_true: t.Tensor):
     #y_true, y_pred = [o.cpu() for o in [y_true, y_pred]]
     #y_true, y_pred = [np.asarray(o) for o in [y_true, y_pred]]
     y_pred = y_pred.int()
     y_true = y_true.int()
     # Outputs: BATCH X H X W
+    
+    intersection = (y_pred & y_true).float().sum()  # Will be zero if Truth=0 or Prediction=0
+    union = (y_pred | y_true).float().sum()  # Will be zero if both are 0
+    
+    if union>0:
+        iou = intersection / union
+    else:
+        iou = 0
 
-    intersection = (y_pred & y_true).float().sum(
-        (0, 1, 2, 3, 4))  # Will be zero if Truth=0 or Prediction=0
-    union = (y_pred | y_true).float().sum(
-        (0, 1, 2, 3, 4))  # Will be zero if both are 0
-
-    iou = (intersection + SMOOTH) / (union + SMOOTH
-                                     )  # We smooth our devision to avoid 0/0
     iou = iou.cpu()
     return iou
